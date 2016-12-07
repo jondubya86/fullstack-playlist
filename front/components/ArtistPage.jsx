@@ -6,24 +6,22 @@ const ArtistPage = React.createClass({
 		return {artists:[]}
 	},
 	componentDidMount(){
-				$.ajax({
-					url: '/api/artist',
-					type: 'GET'
-				})
-				.done((data)=>{
-					// console.log(data[0].name)
-					this.setState({artists:data})
-				})
+		$.ajax({
+			url: '/api/artist',
+			type: 'GET'
+		})
+		.done((data)=>{
+			this.setState({artists:data})
+		})
 	},
 	render(){
+		console.log(this.state.artists)
 	return (
 		<div>
 			<ul>
 			{this.state.artists.map((artist,index)=>
-				{
-				return (<li key={index}>{artist.name}</li>)
-				})	
-			}
+				{return (<li key={index}>{artist.name}</li>)}	
+			)}
 			</ul>
 		</div>
 		)

@@ -1,13 +1,14 @@
 import React from 'React'
+import {Link} from 'react-router'
 
 const Navbar = () =>(
 	<div>
-		<h1>
-			<span>Artists</span>
-			<span>Songs</span>
-			<span>Playlist</span>
-			<span>Create Playlist</span>
-		</h1>
+		<h4>
+			<Link to='/artists'>Artists</Link>
+			<Link to='/songs'>Songs</Link>
+			<Link to='/playlist'>Playlist</Link>
+			<Link to='/createplaylist'>Create Playlist</Link>
+		</h4>
 	</div>
 );
 
