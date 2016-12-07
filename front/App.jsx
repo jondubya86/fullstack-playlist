@@ -1,15 +1,25 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {Router, Route, hashHistory,IndexRoute} from 'react-router';
+import Home from './components/Home.jsx'
+import Navbar from './components/Navbar.jsx'
+import ArtistPage from './components/ArtistPage.jsx'
 
 const App = (props)=>(
     <div>
-      <h1> Hey! </h1>
+    	<Navbar/>
+      	{props.children}
     </div>
 )
 
 ReactDOM.render(
-  <App />,
+  <Router history={hashHistory}>
+    <Route path="/" component={App} >
+      <IndexRoute component={Home} />
+      <Route path="/Home" component={Home} />
+      <Route path="/artist" component={ArtistPage}/>
+	</Route>
+	</Router>,
   document.getElementById('app')
 )
 

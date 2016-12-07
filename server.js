@@ -16,13 +16,13 @@ const playlistRouter = router.playlistRouter;
 app.use(express.static(path.join(__dirname, './front/bundle')));
 
 	app.use(bodyParser.urlencoded({ extended: true }));
-  app.use('/api/artist', artistRouter);
-  app.use('/api/genre', genreRouter);
+  	app.use('/api/artist', artistRouter);
+  	app.use('/api/genre', genreRouter);
 	app.use('/api/song', songRouter);
-  app.use('/api/playlist', playlistRouter);
-  app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/front/index.html'))});
-  app.listen('9955', () => console.log('Listening on port 9955'));
+  	app.use('/api/playlist', playlistRouter);
+  	app.get('/*', (req, res) => {
+  	res.sendFile(path.join(__dirname, '/front/index.html'))});
+  	app.listen('9955', () => console.log('Listening on port 9955'));
 //body-parser middleware adds .body property to req (if we make a POST AJAX request with some data attached, that data will be accessible as req.body)
 
 
