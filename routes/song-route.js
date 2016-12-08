@@ -10,6 +10,16 @@ const getAllSongs = (req,res)=>{
     res.send(songs)
   })
 };
+const findSongByArtist =(req,res)=>{
+  Song.findAll({
+      include: [{
+        model: Artist,
+        where: [{name:req.params.artistid}]
+              }]
+  }).then((data)=>{
+     res.send(data)
+})
+};
 
 const getSongById = (req,res)=>{
   Song.findById(req.params.id)
@@ -67,6 +77,9 @@ router.route('/')
 router.route('/:id')
 .get(getSongById)
 .delete(deleteSongById)
+
+router.route('/:artistid')
+.get(findSongByArtist)
 
 router.route('/:id/:title')
 .put(updateSong)

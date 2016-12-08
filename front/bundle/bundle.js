@@ -79,17 +79,21 @@
 	
 	var _ArtistPage2 = _interopRequireDefault(_ArtistPage);
 	
-	var _SongsPage = __webpack_require__(274);
+	var _SongsPage = __webpack_require__(273);
 	
 	var _SongsPage2 = _interopRequireDefault(_SongsPage);
 	
-	var _Playlist = __webpack_require__(275);
+	var _Playlist = __webpack_require__(276);
 	
 	var _Playlist2 = _interopRequireDefault(_Playlist);
 	
-	var _Player = __webpack_require__(276);
+	var _Player = __webpack_require__(275);
 	
 	var _Player2 = _interopRequireDefault(_Player);
+	
+	var _SingleArtist = __webpack_require__(277);
+	
+	var _SingleArtist2 = _interopRequireDefault(_SingleArtist);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -109,10 +113,12 @@
 	    _reactRouter.Route,
 	    { path: '/', component: App },
 	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'player', component: _Player2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'Home', component: _Home2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'artists', component: _ArtistPage2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'artists/:id', component: _SingleArtist2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'songs', component: _SongsPage2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/playlist', component: _Playlist2.default })
+	    _react2.default.createElement(_reactRouter.Route, { path: 'playlist', component: _Playlist2.default })
 	  )
 	), document.getElementById('app'));
 	
@@ -30760,9 +30766,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _jquery = __webpack_require__(273);
+	var _jquery = __webpack_require__(274);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _reactRouter = __webpack_require__(184);
+	
+	var _SingleArtist = __webpack_require__(277);
+	
+	var _SingleArtist2 = _interopRequireDefault(_SingleArtist);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -30781,6 +30793,12 @@
 				_this.setState({ artists: data });
 			});
 		},
+	
+		// artistSongs(songs){
+		// 	$.ajax({
+		// 		url: 
+		// 	})
+		// }
 		render: function render() {
 			console.log(this.state.artists);
 			return _react2.default.createElement(
@@ -30791,9 +30809,13 @@
 					null,
 					this.state.artists.map(function (artist, index) {
 						return _react2.default.createElement(
-							'li',
-							{ key: index },
-							artist.name
+							_reactRouter.Link,
+							{ to: '/artists/' + artist.id, key: index },
+							_react2.default.createElement(
+								'li',
+								{ key: index },
+								artist.name
+							)
 						);
 					})
 				)
@@ -30805,6 +30827,96 @@
 
 /***/ },
 /* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _jquery = __webpack_require__(274);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _Player = __webpack_require__(275);
+	
+	var _Player2 = _interopRequireDefault(_Player);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// const chooseSong((song)=>{
+	// 	console.log(song)
+	// 	})
+	var SongsPage = _react2.default.createClass({
+		displayName: 'SongsPage',
+		getInitialState: function getInitialState() {
+			return { songs: [],
+				artist: '',
+				currentsongtitle: 'Rick Astley - Never Gonna Give You Up',
+				currentsongurl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' };
+		},
+		componentDidMount: function componentDidMount() {
+			var _this = this;
+	
+			_jquery2.default.ajax({
+				url: '/api/song',
+				type: 'GET'
+			}).done(function (data) {
+				console.log(data);
+				_this.setState({ songs: data });
+			});
+		},
+		pickSong: function pickSong(song) {
+			var _this2 = this;
+	
+			this.setState({ currentsongtitle: song.title });
+			this.setState({ currentsongurl: song.youtube_url });
+			this.setState({ artist: song.artistId });
+			_jquery2.default.ajax({
+				url: '/api/artist/' + song.artistId,
+				type: 'GET'
+			}).done(function (artist) {
+				_this2.setState({ artist: artist.name });
+			});
+		},
+		render: function render() {
+			var _this3 = this;
+	
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'ul',
+					null,
+					this.state.songs.map(function (song, index) {
+						return _react2.default.createElement(
+							'li',
+							{ onClick: _this3.pickSong.bind(_this3, song), key: index },
+							song.title
+						);
+					})
+				),
+				_react2.default.createElement(
+					'h1',
+					null,
+					this.state.artist,
+					' - ',
+					this.state.currentsongtitle
+				),
+				_react2.default.createElement(_Player2.default, { youtube: this.state.currentsongurl })
+			);
+		}
+	});
+	
+	exports.default = SongsPage;
+
+/***/ },
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -41030,84 +41142,36 @@
 
 
 /***/ },
-/* 274 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _jquery = __webpack_require__(273);
-	
-	var _jquery2 = _interopRequireDefault(_jquery);
-	
-	var _Player = __webpack_require__(276);
-	
-	var _Player2 = _interopRequireDefault(_Player);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// const chooseSong((song)=>{
-	// 	console.log(song)
-	// 	})
-	var SongsPage = _react2.default.createClass({
-		displayName: 'SongsPage',
-		getInitialState: function getInitialState() {
-			return { songs: [], currentsongtitle: '', currentsongurl: '' };
-		},
-		componentDidMount: function componentDidMount() {
-			var _this = this;
-	
-			_jquery2.default.ajax({
-				url: '/api/song',
-				type: 'GET'
-			}).done(function (data) {
-				_this.setState({ songs: data });
-			});
-		},
-		pickSong: function pickSong(song) {
-			this.setState({ currentsongtitle: song.title });
-			this.setState({ currentsongurl: song.youtube_url });
-		},
-		render: function render() {
-			var _this2 = this;
-	
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					'ul',
-					null,
-					this.state.songs.map(function (song, index) {
-						return _react2.default.createElement(
-							'li',
-							{ onClick: _this2.pickSong.bind(_this2, song), key: index },
-							song.title
-						);
-					})
-				),
-				_react2.default.createElement(
-					'h1',
-					null,
-					this.state.currentsongtitle
-				),
-				_react2.default.createElement(_Player2.default, { youtube: this.state.currentsongurl })
-			);
-		}
-	});
-	
-	exports.default = SongsPage;
-
-/***/ },
 /* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Player = function Player(props) {
+		return _react2.default.createElement(
+			"div",
+			null,
+			_react2.default.createElement("iframe", { id: "ytplayer", type: "text/html", width: "640", height: "360",
+				src: props.youtube.replace('watch?v=', 'embed/') + "?origin=http://localhost:9955com" })
+		);
+	};
+	
+	exports.default = Player;
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -41118,7 +41182,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _jquery = __webpack_require__(273);
+	var _jquery = __webpack_require__(274);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
@@ -41162,10 +41226,10 @@
 	exports.default = Playlist;
 
 /***/ },
-/* 276 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -41175,18 +41239,34 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactRouter = __webpack_require__(184);
+	
+	var _jquery = __webpack_require__(274);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Player = function Player(props) {
-		return _react2.default.createElement(
-			"div",
-			null,
-			_react2.default.createElement("iframe", { id: "ytplayer", type: "text/html", width: "640", height: "360",
-				src: props.youtube.replace('watch?v=', 'embed/') + "?origin=http://localhost:99.com" })
-		);
-	};
+	var SingleArtist = _react2.default.createClass({
+		displayName: 'SingleArtist',
+		getInitialState: function getInitialState() {
+			return { songs: [] };
+		},
+		componentDidMount: function componentDidMount() {},
+		render: function render() {
 	
-	exports.default = Player;
+			// $.ajax({
+			// 	url: '/api/songs/'+props.
+			// })
+			return _react2.default.createElement(
+				'h1',
+				null,
+				props.params.id
+			);
+		}
+	});
+	
+	exports.default = SingleArtist;
 
 /***/ }
 /******/ ]);
