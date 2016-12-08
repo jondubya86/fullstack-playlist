@@ -9,7 +9,7 @@ var Playlist = sequelizeConnection.define('playlist',{
   title: {type: Sequelize.STRING(100)}
 });
 
-Song.belongsToMany(Playlist,{through: 'Playlist_song'});
-Playlist.belongsToMany(Song,{through: 'Playlist_song'});
+Song.belongsToMany(Playlist,{through: 'Playlist_Song'});
+Playlist.belongsToMany(Song,{through: 'Playlist_Song'});
 
 module.exports = Playlist;
