@@ -5,7 +5,7 @@ const Sequelize = require('sequelize');
 const sequelizeConnection = require('./db');
 
 const bodyParser = require('body-parser');
-//key var starter to link to index.js in routes
+//when a folder is required, index.js is imported by default
 const router = require('./routes');
 
 const artistRouter = router.artistRouter;

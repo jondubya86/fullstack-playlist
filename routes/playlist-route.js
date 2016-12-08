@@ -11,7 +11,14 @@ const getAllPlaylists = (req,res) => {
 // /api/playlist GET all playlists with song information fully populated (in other words, should say full song, artist, and genre names, instead of only having the ids)
 const getPlaylistsFull = (req, res) => {
 	Playlist.findAll(
-		{ include: [ {all: true} ] }
+		// { include: [ {all: true} ] } // this will only get Song (based on model def) aka
+		{
+			include: [
+				{ model: Song, include: [ // Song: level 1 association
+					{model: Artist}, {model: Genre} // level 2 associations
+				]}
+			]
+		}
 	)
 	.then( fullPlaylists => res.send(fullPlaylists) )
 }
