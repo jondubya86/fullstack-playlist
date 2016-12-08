@@ -8,13 +8,17 @@ const Genre = require('./genre-model');
 //////////
 var Song = sequelizeConnection.define('song',{
   title: {type: Sequelize.STRING(250)},
-  youtube_url: {type: Sequelize.STRING(50),
-        validate: {isUrl: true ,
-                  is: /^[a-z A-Z 0-9 : / ? = .]$/}}
+  youtube_url: {
+  	type: Sequelize.STRING(50),
+    validate: {
+    	isUrl: true 
+			// is: /^[a-z A-Z 0-9 : / ? = .]$/
+		}
+	}
 });
 
 Song.belongsTo(Artist);
-Song.belongsToMany(Genre, {through: 'Song_genre'});
-Genre.belongsToMany(Song, {through: 'Song_genre'});
+Song.belongsToMany(Genre, {through: 'Song_Genre'});
+Genre.belongsToMany(Song, {through: 'Song_Genre'});
 
 module.exports = Song;

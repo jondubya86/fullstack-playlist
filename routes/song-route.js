@@ -31,27 +31,39 @@ const getSongById = (req, res) => {
 // /api/songs POST (create) a new song
 const postSong = (req,res)=>{
   var body = req.body;
-  Artist.findOrCreate({
-    where: {name: body.name}
+  
+  Artist.findOrCreate({ // returns array of objects
+    where: {name: body.name} // 1st Body field in postman
   })
-  .then(artistInfo=>
-    Song.create({
-      title: body.title,
-      youtube_url: body.youtube_url,
-      artistId: artistInfo[0].dataValues.id
-    })
-    .then(songInfo=>{
-      Genre.findOrCreate({
-        where: {title: body.genre}
+  .then( artistInfo => { 
+      // console.log("artistInfo:", artistInfo, "\n artistId:", artistInfo[0].dataValues.id);
+      // res.send(artistInfo)
+      Song.create({ // creates an object, not array of objects
+        title: body.title,  // 2nd Body field in postman
+        youtube_url: body.youtube_url, // 3rd Body field in postman
+        artistId: artistInfo[0].dataValues.id
       })
-      .then(genreInfo=>
-        songInfo.addGenres([genreInfo[0].dataValues.id])
-      )
-    })
+      .then( songInfo => {
+        // console.log("songInfo:", songInfo);
+        Genre.findOrCreate({
+          where: {title: body.genre}
+        }) // nested inside songInfo promise 
+        .then( genreInfo => {
+          // console.log(genreInfo);
+          songInfo.addGenres([genreInfo[0].dataValues.id]) // connecting song object to genre ID
+        })
+        .then( () =>
+          // console.log(songInfo)
+          res.send('New song added.\n ID: ' + songInfo.dataValues.id
+            + '\nTitle: ' + body.title
+            + '\n Artist: ' + body.name
+            + '\n Genre: ' + body.genre 
+            + '\n youtube_url: ' + body.youtube_url)
+        )
+      })
+    } 
   )
-  .then(()=>
-    res.send('Song with name: '+body.title+', artist: '+body.name+', genre: '+body.genre+', youtube_url: '+body.youtube_url+' created!')
-  )
+  
 };
 
 // /api/songs/:id/:newTitle PUT (update) a specific song's title
