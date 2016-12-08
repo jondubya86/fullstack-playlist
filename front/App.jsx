@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, hashHistory,IndexRoute} from 'react-router';
+
+// COMPONENTS
 import Home from './components/Home.jsx';
 import Navbar from './components/Navbar.jsx';
 import ArtistPage from './components/ArtistPage.jsx';
