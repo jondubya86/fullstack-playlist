@@ -15,9 +15,10 @@ const findSongByArtist =(req,res)=>{
           where: {artistId:req.params.id}
   }).then((data)=>{
      res.send(data)
-  }).then((complete)=>{
-  	console.log(complete)
-  })
+     return data
+	}).then((complete)=>{
+		console.log(complete)
+	})
 };
 
 // const getSongById = (req,res)=>{
@@ -73,7 +74,7 @@ router.route('/')
 .get(getAllSongs)
 .post(postNewSong)
 
-router.route('/:id')
+router.route('/song/:id')
 .get(findSongByArtist)
 .delete(deleteSongById)
 

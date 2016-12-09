@@ -41082,15 +41082,15 @@
 			var _this = this;
 	
 			_jquery2.default.ajax({
-				url: '/api/songs/' + this.params.id,
+				url: '/api/song/' + this.props.params.id,
 				type: 'GET'
 			}).done(function (song) {
-				console.log(song.title);
+				console.log(song);
 				_this.setState({ songs: song });
 			});
 		},
 		render: function render() {
-			console.log(this.state.songs.title);
+			console.log(this.state.songs);
 			return _react2.default.createElement(
 				'ul',
 				null,
