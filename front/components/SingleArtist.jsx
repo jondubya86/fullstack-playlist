@@ -7,15 +7,22 @@ const SingleArtist = React.createClass({
 		return {songs:[]}
 	},
 	componentDidMount(){
-
+		$.ajax({
+			url: '/api/songs/'+this.params.id,
+			type: 'GET'
+		}).done((song)=>{
+			console.log(song.title)
+			this.setState({songs:song})
+		})
 	},
 	render(){
-
-	// $.ajax({
-	// 	url: '/api/songs/'+props.
-	// })
+	console.log(this.state.songs.title)
 	return (
-		<h1>{props.params.id}</h1>
+		<ul>{this.state.songs.map((song,index)=>{
+				return (<li key={index}>{song.title}</li>)
+		})}
+		</ul>
+
 		)
 	}
 });

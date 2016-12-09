@@ -79,19 +79,19 @@
 	
 	var _ArtistPage2 = _interopRequireDefault(_ArtistPage);
 	
-	var _SongsPage = __webpack_require__(273);
+	var _SongsPage = __webpack_require__(275);
 	
 	var _SongsPage2 = _interopRequireDefault(_SongsPage);
 	
-	var _Playlist = __webpack_require__(276);
+	var _Playlist = __webpack_require__(277);
 	
 	var _Playlist2 = _interopRequireDefault(_Playlist);
 	
-	var _Player = __webpack_require__(275);
+	var _Player = __webpack_require__(276);
 	
 	var _Player2 = _interopRequireDefault(_Player);
 	
-	var _SingleArtist = __webpack_require__(277);
+	var _SingleArtist = __webpack_require__(274);
 	
 	var _SingleArtist2 = _interopRequireDefault(_SingleArtist);
 	
@@ -30766,13 +30766,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _jquery = __webpack_require__(274);
+	var _jquery = __webpack_require__(273);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
 	var _reactRouter = __webpack_require__(184);
 	
-	var _SingleArtist = __webpack_require__(277);
+	var _SingleArtist = __webpack_require__(274);
 	
 	var _SingleArtist2 = _interopRequireDefault(_SingleArtist);
 	
@@ -30827,96 +30827,6 @@
 
 /***/ },
 /* 273 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _jquery = __webpack_require__(274);
-	
-	var _jquery2 = _interopRequireDefault(_jquery);
-	
-	var _Player = __webpack_require__(275);
-	
-	var _Player2 = _interopRequireDefault(_Player);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// const chooseSong((song)=>{
-	// 	console.log(song)
-	// 	})
-	var SongsPage = _react2.default.createClass({
-		displayName: 'SongsPage',
-		getInitialState: function getInitialState() {
-			return { songs: [],
-				artist: '',
-				currentsongtitle: 'Rick Astley - Never Gonna Give You Up',
-				currentsongurl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' };
-		},
-		componentDidMount: function componentDidMount() {
-			var _this = this;
-	
-			_jquery2.default.ajax({
-				url: '/api/song',
-				type: 'GET'
-			}).done(function (data) {
-				console.log(data);
-				_this.setState({ songs: data });
-			});
-		},
-		pickSong: function pickSong(song) {
-			var _this2 = this;
-	
-			this.setState({ currentsongtitle: song.title });
-			this.setState({ currentsongurl: song.youtube_url });
-			this.setState({ artist: song.artistId });
-			_jquery2.default.ajax({
-				url: '/api/artist/' + song.artistId,
-				type: 'GET'
-			}).done(function (artist) {
-				_this2.setState({ artist: artist.name });
-			});
-		},
-		render: function render() {
-			var _this3 = this;
-	
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					'ul',
-					null,
-					this.state.songs.map(function (song, index) {
-						return _react2.default.createElement(
-							'li',
-							{ onClick: _this3.pickSong.bind(_this3, song), key: index },
-							song.title
-						);
-					})
-				),
-				_react2.default.createElement(
-					'h1',
-					null,
-					this.state.artist,
-					' - ',
-					this.state.currentsongtitle
-				),
-				_react2.default.createElement(_Player2.default, { youtube: this.state.currentsongurl })
-			);
-		}
-	});
-	
-	exports.default = SongsPage;
-
-/***/ },
-/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -41142,7 +41052,153 @@
 
 
 /***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(184);
+	
+	var _jquery = __webpack_require__(273);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var SingleArtist = _react2.default.createClass({
+		displayName: 'SingleArtist',
+		getInitialState: function getInitialState() {
+			return { songs: [] };
+		},
+		componentDidMount: function componentDidMount() {
+			var _this = this;
+	
+			_jquery2.default.ajax({
+				url: '/api/songs/' + this.params.id,
+				type: 'GET'
+			}).done(function (song) {
+				console.log(song.title);
+				_this.setState({ songs: song });
+			});
+		},
+		render: function render() {
+			console.log(this.state.songs.title);
+			return _react2.default.createElement(
+				'ul',
+				null,
+				this.state.songs.map(function (song, index) {
+					return _react2.default.createElement(
+						'li',
+						{ key: index },
+						song.title
+					);
+				})
+			);
+		}
+	});
+	
+	exports.default = SingleArtist;
+
+/***/ },
 /* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _jquery = __webpack_require__(273);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _Player = __webpack_require__(276);
+	
+	var _Player2 = _interopRequireDefault(_Player);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// const chooseSong((song)=>{
+	// 	console.log(song)
+	// 	})
+	var SongsPage = _react2.default.createClass({
+		displayName: 'SongsPage',
+		getInitialState: function getInitialState() {
+			return { songs: [],
+				artist: 'Rick Astley',
+				currentsongtitle: 'Never Gonna Give You Up',
+				currentsongurl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' };
+		},
+		componentDidMount: function componentDidMount() {
+			var _this = this;
+	
+			_jquery2.default.ajax({
+				url: '/api/song',
+				type: 'GET'
+			}).done(function (data) {
+				console.log(data);
+				_this.setState({ songs: data });
+			});
+		},
+		pickSong: function pickSong(song) {
+			var _this2 = this;
+	
+			this.setState({ currentsongtitle: song.title });
+			this.setState({ currentsongurl: song.youtube_url });
+			this.setState({ artist: song.artistId });
+			_jquery2.default.ajax({
+				url: '/api/artist/' + song.artistId,
+				type: 'GET'
+			}).done(function (artist) {
+				_this2.setState({ artist: artist.name });
+			});
+		},
+		render: function render() {
+			var _this3 = this;
+	
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'ul',
+					null,
+					this.state.songs.map(function (song, index) {
+						return _react2.default.createElement(
+							'li',
+							{ onClick: _this3.pickSong.bind(_this3, song), key: index },
+							song.title
+						);
+					})
+				),
+				_react2.default.createElement(
+					'h1',
+					null,
+					this.state.artist,
+					' - ',
+					this.state.currentsongtitle
+				),
+				_react2.default.createElement(_Player2.default, { youtube: this.state.currentsongurl })
+			);
+		}
+	});
+	
+	exports.default = SongsPage;
+
+/***/ },
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -41169,7 +41225,7 @@
 	exports.default = Player;
 
 /***/ },
-/* 276 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41182,7 +41238,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _jquery = __webpack_require__(274);
+	var _jquery = __webpack_require__(273);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
@@ -41224,49 +41280,6 @@
 	});
 	
 	exports.default = Playlist;
-
-/***/ },
-/* 277 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRouter = __webpack_require__(184);
-	
-	var _jquery = __webpack_require__(274);
-	
-	var _jquery2 = _interopRequireDefault(_jquery);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var SingleArtist = _react2.default.createClass({
-		displayName: 'SingleArtist',
-		getInitialState: function getInitialState() {
-			return { songs: [] };
-		},
-		componentDidMount: function componentDidMount() {},
-		render: function render() {
-	
-			// $.ajax({
-			// 	url: '/api/songs/'+props.
-			// })
-			return _react2.default.createElement(
-				'h1',
-				null,
-				props.params.id
-			);
-		}
-	});
-	
-	exports.default = SingleArtist;
 
 /***/ }
 /******/ ]);

@@ -8,8 +8,8 @@ import Player from './Player.jsx'
 const SongsPage = React.createClass({
 	getInitialState(){
 		return {songs:[],
-				artist:'',
-				currentsongtitle:'Rick Astley - Never Gonna Give You Up', 
+				artist:'Rick Astley',
+				currentsongtitle:'Never Gonna Give You Up', 
 				currentsongurl:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}
 	},
 	componentDidMount(){

@@ -12,21 +12,20 @@ const getAllSongs = (req,res)=>{
 };
 const findSongByArtist =(req,res)=>{
   Song.findAll({
-      include: [{
-        model: Artist,
-        where: [{name:req.params.artistid}]
-              }]
+          where: {artistId:req.params.id}
   }).then((data)=>{
      res.send(data)
-})
-};
-
-const getSongById = (req,res)=>{
-  Song.findById(req.params.id)
-  .then((data)=>{
-    res.send(data)
+  }).then((complete)=>{
+  	console.log(complete)
   })
 };
+
+// const getSongById = (req,res)=>{
+//   Song.findById(req.params.id)
+//   .then((data)=>{
+//     res.send(data)
+//   })
+// };
 
 const postNewSong = (req,res)=>{
 	var body = req.body;
@@ -75,11 +74,9 @@ router.route('/')
 .post(postNewSong)
 
 router.route('/:id')
-.get(getSongById)
+.get(findSongByArtist)
 .delete(deleteSongById)
 
-router.route('/:artistid')
-.get(findSongByArtist)
 
 router.route('/:id/:title')
 .put(updateSong)
